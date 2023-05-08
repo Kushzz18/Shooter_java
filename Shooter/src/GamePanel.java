@@ -12,7 +12,7 @@ import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener {
+public class GamePanel extends JPanel implements Runnable,KeyListener{
     private static final long serialVersionUID = 10L;
     private Color bgColor = new Color(50, 100, 100);
     public static int WIDTH;
@@ -22,12 +22,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public Graphics2D g;
     public BufferedImage image;
     private Thread thread;
-    public static Player player;
-    public static ArrayList<Enemy> enemies;
+    //public static Player player;
+    //public static ArrayList<Enemy> enemies;
     public static ArrayList<Bullet> bullets;
-    public static ArrayList<Explosion> explosions;
-    public static ArrayList<PowerUp> powerups;
-    private Laser laser;
+    //public static ArrayList<Explosion> explosions;
+    //public static ArrayList<PowerUp> powerups;
+   // private Laser laser;
     private boolean laserTaken;
     private long waveStartTimer;
     private long waveStartTimerDiff;
@@ -38,17 +38,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private int slowLength;
     private long slowElapsed;
 
-    public GamePanel() {
+
+    public GamePanel(){
         WIDTH = 600;
-        HEIGHT = 450;
+        HEIGHT = 600;
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.FPS = 60;
         this.setFocusable(true);
         this.requestFocus();
         this.waveStartTimer = 0L;
         this.waveStartTimerDiff = 0L;
-        this.waveDelay = 2000;
-        this.slowLength = 15000;
+        this.waveDelay = 2500;
+        this.slowLength = 10000;
+
     }
     public void addNotify(){
         super.addNotify();
@@ -57,5 +59,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             this.thread.start();
         }
         this.addKeyListener(this);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void run() {
+
     }
 }
