@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private long slowStartTimer;
     private int slowLength;
     private long slowElapsed;
+
     public GamePanel() {
         WIDTH = 600;
         HEIGHT = 450;
@@ -49,3 +50,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         this.waveDelay = 2000;
         this.slowLength = 15000;
     }
+    public void addNotify(){
+        super.addNotify();
+        if(this.thread == null){
+            this.thread = new Thread(this);
+            this.thread.start();
+        }
+        this.addKeyListener(this);
+    }
+}
