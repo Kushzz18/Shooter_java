@@ -267,5 +267,5 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
                 powerups.remove(i);
             }
         }
-}
+    }
 }

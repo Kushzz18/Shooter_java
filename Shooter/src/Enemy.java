@@ -35,4 +35,18 @@ public class Enemy {
         this.setXY = true;
         this.init();
     }
+    public Enemy(int type, int rank, int health, double angle, double x, double y){
+        this.type = type;
+        this.rank = rank;
+        this.angle = angle;
+        this.health = health;
+        if(rank == 1 && health == 1){
+            int health = true;
+        }
+        this.setHealth = false;
+        this.x = x;
+        this.y = y;
+        this.setXY = false;
+        this.init();
+    }
 }
