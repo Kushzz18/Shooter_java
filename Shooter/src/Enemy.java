@@ -64,6 +64,118 @@ public class Enemy {
                 this.enemyColor = Color.MAGENTA;
                 this.enemyBoundaryColor = Color.BLACK;
             }
+            if (this.rank == 2) {
+                this.r = 11;
+                if (this.setHealth) {
+                    this.health = 2;
+                }
+                this.speed = 2;
+                this.enemyColor = Color.BLACK.brighter();
+                this.enemyBoundaryColor = Color.MAGENTA;
+            }
+        } else if (this.type == 2) {
+            if (this.rank == 1) {
+                this.r = 12;
+                if (this.setHealth) {
+                    this.health = 3;
+                }
+
+                this.speed = 2;
+                this.enemyColor = Color.PINK;
+                this.enemyBoundaryColor = Color.PINK.darker().darker();
+            } else if (this.rank == 2) {
+                this.r = 13;
+                if (this.setHealth) {
+                    this.health = 4;
+                }
+
+                this.speed = 2;
+                this.enemyColor = Color.ORANGE;
+                this.enemyBoundaryColor = this.enemyColor.darker().darker();
+            }
+        } else if (this.type == 3) {
+            if (this.rank == 1) {
+                this.r = 14;
+                if (this.setHealth) {
+                    this.health = 5;
+                }
+
+                this.speed = 2;
+                this.enemyColor = Color.MAGENTA.brighter();
+                this.enemyBoundaryColor = Color.BLUE;
+            } else if (this.rank == 2) {
+                this.r = 15;
+                if (this.setHealth) {
+                    this.health = 6;
+                }
+
+                this.speed = 1;
+                this.enemyColor = Color.DARK_GRAY;
+                this.enemyBoundaryColor = Color.CYAN;
+            }
         }
+        if (this.setXY) {
+            this.x = Math.random() * (double)GamePanel.WIDTH - (double)(4 * this.r) + (double)(2 * this.r);
+            this.y = (double)(-this.r);
+        }
+
+        this.dx = Math.cos(this.angle) * (double)this.speed;
+        this.dy = Math.sin(this.angle) * (double)this.speed;
+    }
+    public double getx() {
+        return this.x;
+    }
+
+    public double gety() {
+        return this.y;
+    }
+
+    public int getr() {
+        return this.r;
+    }
+
+    public int getHealth() {
+        return this.health;
+    }
+
+    public double getAngle() {
+        return this.angle;
+    }
+
+    public Color getColor() {
+        return this.enemyColor;
+    }
+
+    public int getType() {
+        return this.type;
+    }
+
+    public int getRank() {
+        return this.rank;
+    }
+
+    public boolean isDead() {
+        return this.dead;
+    }
+
+    public void setSlow(boolean b) {
+        this.slow = b;
+    }
+
+    public boolean isSlow() {
+        return this.slow;
+    }
+    public void hit() {
+        --this.health;
+        if (this.health > 0) {
+            this.setFlash = true;
+            this.startFlashTimer = System.nanoTime();
+        }
+
+        if (this.enemyColor == Color.MAGENTA && this.enemyBoundaryColor == Color.BLACK) {
+            this.dead = true;
+        }
+
+        this.dead = this.health <= 0;
     }
 }
