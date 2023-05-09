@@ -225,5 +225,15 @@ public class Enemy {
         int R1 = this.enemyBoundaryColor.getRed();
         int G1 = this.enemyBoundaryColor.getGreen();
         int B1 = this.enemyBoundaryColor.getBlue();
+        this.enemyBoundaryColor = new Color(R1, G1, B1, 155);
+        if (this.health > 0 && this.setFlash && this.startFlashTimer != 0L) {
+            g.setColor(Color.WHITE);
+            g.setStroke(new BasicStroke(2.0F));
+            g.fillOval((int)this.x, (int)this.y - this.r, 2 * this.r, 2 * this.r);
+            g.setColor(this.enemyBoundaryColor.brighter());
+            g.drawOval((int)this.x, (int)this.y - this.r, 2 * this.r, 2 * this.r);
+            g.setStroke(new BasicStroke(1.0F));
+        }
     }
+
 }
