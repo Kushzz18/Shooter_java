@@ -315,4 +315,15 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
         }
 
     }
+
+    public void keyPressed(KeyEvent e){
+
+        int keyCode = e.getKeyCode();
+        if(keyCode == KeyEvent.VK_LEFT) player.setLeft(true);
+        if(keyCode == KeyEvent.VK_RIGHT) player.setRight(true);
+        if(keyCode == KeyEvent.VK_UP) player.setUp(true);
+        if(keyCode == KeyEvent.VK_DOWN) player.setDown(true);
+        if(keyCode == KeyEvent.VK_SPACE) player.setFiring(true);
+
+    }
 }
