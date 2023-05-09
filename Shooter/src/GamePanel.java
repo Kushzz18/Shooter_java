@@ -301,4 +301,18 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
         g2.dispose();
 
     }
+    private void createNewEnemies(){
+
+        int n = waveNumber *3;
+        int type = 0;
+        int rank = 0;
+
+        for(int i = 0; i < n; i++){
+
+            type=(waveNumber<3)?1:(int) (Math.random() * (3)) + 1;
+            rank=(type==1)?(int) (Math.random() * (2)) + 1:(int) (Math.random() * (2)) + 1;
+            enemies.add(new Enemy(type, rank));
+        }
+
+    }
 }
