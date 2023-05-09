@@ -126,11 +126,34 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
         double dist;
         if(!this.laserTaken){
             for(i=0;i<bullets.size();i++){
-                Bullet bullet=(Bullets)bullets.get(i);
-                px=(double)b.getx();
-                ex = (double)b.gety();
-                ey = (double)b.getr();
+                Bullet bullet=(Bullet)bullets.get(i);
+                px=(double)bullet.getx();
+                ex = (double)bullet.gety();
+                ey = (double)bullet.getr();
             }
+        }
+        for(r=0;r< enemies.size();r++){
+            Enemy enemy = (Enemy).enemies.get(r);
+            dx = enemy.getx();
+            dy = enemy.gety();
+            dist = (double)enemy.getr();
+            double dx = px - dx;
+            double dy = ex - dy;
+            double dist = Math.sqrt(dx * dx + dy * dy);
+            boolean removed = false;
+            if (dist < ey + dist) {
+                if (enemy.getHealth() == 2) {
+                    explosions.add(new Explosion(enemy, enemy.getr() * 5));
+                    enemies.add(new Enemy(enemy.getRank() - 1 > 0 ? enemy.getRank() - 1 : 1, enemy.getType() - 1 > 0 ? enemy.getType() - 1 : 1, enemy.getHealth() - 1, enemy.getAngle() + Math.toRadians(70.0), enemy.getx() - (double)enemy.getr(), enemy.gety()));
+                    enemies.add(new Enemy(enemy.getRank() - 1 > 0 ? enemy.getRank() - 1 : 1, enemy.getType() - 1 > 0 ? enemy.getType() - 1 : 1, enemy.getHealth() - 1, enemy.getAngle() - Math.toRadians(60.0), enemy.getx() + (double)enemy.getr(), enemy.gety()));
+                    enemies.remove(r);
+                    if (this.slowStartTimer != 0L) {
+                        for(int k = 0; k < enemies.size(); ++k) {
+                            ((Enemy)enemies.get(k)).setSlow(true);
+                        }
+                    }
+                    removed = true;
+                }
         }
     }
 }
