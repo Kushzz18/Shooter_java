@@ -182,4 +182,29 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
                 --i;
             }
         }
+        int y;
+        int i;
+        double dist;
+        if (!player.isRecovering() && !player.isOver()) {
+            i = player.getx();
+            y = player.gety();
+            i = player.getr();
+            for(int i = 0; i < enemies.size(); ++i) {
+                Enemy e = (Enemy)enemies.get(i);
+                double ex = e.getx();
+                double ey = e.gety();
+                dist = (double)e.getr();
+                double dx = (double)i - ex;
+                double dy = (double)y - ey;
+                double dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < (double)i + dist) {
+                    player.loseLife();
+                    player.addScore(-(e.getRank() + e.getType()));
+                    explosions.add(new Explosion((Enemy)enemies.get(i), ((Enemy)enemies.get(i)).getr() * 5));
+                    enemies.remove(i);
+                    --i;
+                    player.addPower(1);
+                }
+            }
+        }
 }
