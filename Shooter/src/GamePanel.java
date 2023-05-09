@@ -220,7 +220,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
                 powerups.remove(i);
             }
         }
-        for(i = 0; i < powerups.size(); ++i) {
+        for(i = 0; i < powerups.size(); i++) {
             PowerUp p = (PowerUp)powerups.get(i);
             px = p.getx();
             ex = p.gety();
@@ -266,6 +266,25 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 
                 powerups.remove(i);
             }
+        }
+        if(this.laser != null && this.laserTaken && !player.isOver()){
+            i = player.getx() + player.getr();
+            y = player.gety();
+            for(i=0;i< enemies.size();i++){
+                Enemy e = (Enemy)enemies.get(i);
+                ex = e.getx();
+                ey = e.gety();
+                r = e.getr();
+                dist = ex < (double)i ? (double)i - ex : ex - (double)i;
+                if (ey < (double)y && dist < (double)r) {
+                    explosions.add(new Explosion(e, r * 5));
+                    player.addScore(e.getType() + e.getRank());
+                    enemies.remove(i);
+                }
+            }
+        }
+        if(this.laser !=null){
+            
         }
     }
 }

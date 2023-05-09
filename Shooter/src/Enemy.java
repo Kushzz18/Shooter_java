@@ -42,7 +42,7 @@ public class Enemy {
         this.angle = angle;
         this.health = health;
         if (rank == 1 && health == 1) {
-            int health = true;
+           int health = true;
         }
         this.setHealth = false;
         this.x = x;
@@ -50,7 +50,6 @@ public class Enemy {
         this.setXY = false;
         this.init();
     }
-
     public void init() {
         this.dead = false;
         this.flashTimer = 80;
@@ -233,7 +232,13 @@ public class Enemy {
             g.setColor(this.enemyBoundaryColor.brighter());
             g.drawOval((int)this.x, (int)this.y - this.r, 2 * this.r, 2 * this.r);
             g.setStroke(new BasicStroke(1.0F));
+        }else{
+            g.setColor(this.enemyColor);
+            g.setStroke(new BasicStroke(2.0F));
+            g.fillOval((int)this.x, (int)this.y - this.r, 2 * this.r, 2 * this.r);
+            g.setColor(this.enemyBoundaryColor);
+            g.drawOval((int)this.x, (int)this.y - this.r, 2 * this.r, 2 * this.r);
+            g.setStroke(new BasicStroke(1.0F));
         }
     }
-
 }
