@@ -12,7 +12,7 @@ import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable,KeyListener{
+public class GamePanel extends JPanel implements Runnable,KeyListener {
     private static final long serialVersionUID = 10L;
     private Color bgColor = new Color(50, 100, 100);
     public static int WIDTH;
@@ -39,7 +39,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
     private long slowElapsed;
 
 
-    public GamePanel(){
+    public GamePanel() {
         WIDTH = 600;
         HEIGHT = 600;
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -52,17 +52,19 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
         this.slowLength = 10000;
 
     }
-    public void addNotify(){
+
+    public void addNotify() {
         super.addNotify();
-        if(this.thread == null){
+        if (this.thread == null) {
             this.thread = new Thread(this);
             this.thread.start();
         }
         this.addKeyListener(this);
     }
-    public void run(){
+
+    public void run() {
         this.running = true;
-        this.image= new BufferedImage(WIDTH,HEIGHT,1);
+        this.image = new BufferedImage(WIDTH, HEIGHT, 1);
         this.g = (Graphics2D) this.image.getGraphics();
         //player = new Player();
         enemies = new ArrayList();
@@ -71,12 +73,10 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
         explosions = new ArrayList();
         this.g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         this.g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        long targetTime = (long)(1000 / this.FPS);
-        while(this.running){
+        long targetTime = (long) (1000 / this.FPS);
+        while (this.running) {
             long startTime = System.nanoTime();
             this.gameUpdate();
-            //this.gameRender();
-            //this.gamedraw();
             long URDTimeMillis = (System.nanoTime() - startTime) / 1000000L;
             long waitTime = targetTime - URDTimeMillis;
 
@@ -85,26 +85,20 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
             } catch (Exception var10) {
             }
         }
+    }
+
+    public void gameUpdate() {
+        if (this.waveStartTimer == 0L && enemies.size() == 0) {
+            ++this.waveNumber;
+            this.waveStart = false;
+            this.waveStartTimer = System.nanoTime();
+        } else {
+            this.waveStartTimerDiff = (System.nanoTime() - this.waveStartTimer) / 1000000L;
+            if (this.waveStartTimerDiff > (long) this.waveDelay) {
+                this.waveStart = true;
+                this.waveStartTimer = 0L;
+                this.waveStartTimerDiff = 0L;
+            }
         }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
-
-    @Override
-    public void run() {
-
     }
 }
