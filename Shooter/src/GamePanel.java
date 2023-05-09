@@ -220,4 +220,52 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
                 powerups.remove(i);
             }
         }
+        for(i = 0; i < powerups.size(); ++i) {
+            PowerUp p = (PowerUp)powerups.get(i);
+            px = p.getx();
+            ex = p.gety();
+            int pr = p.getr();
+            int ppx = player.getx();
+            r = player.gety();
+            int ppr = player.getr();
+            dx = px - (double)ppx;
+            dy = ex - (double)r;
+            dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < (double)(pr + ppr)) {
+                int type = p.getType();
+                label184:
+                switch (type) {
+                    case 1:
+                        player.addLife();
+                        break;
+                    case 2:
+                        player.addPower(1);
+                        break;
+                    case 3:
+                        player.addPower(2);
+                        break;
+                    case 4:
+                        this.laser = new Laser();
+                        this.laserTaken = true;
+                        break;
+                    case 5:
+                        this.slowStartTimer = System.nanoTime();
+                        int j = 0;
+
+                        while(true) {
+                            if (j >= enemies.size()) {
+                                break label184;
+                            }
+
+                            ((Enemy)enemies.get(j)).setSlow(true);
+                            ++j;
+                        }
+                    default:
+                        System.exit(0);
+                }
+
+                powerups.remove(i);
+            }
+        }
+}
 }
