@@ -35,12 +35,13 @@ public class Enemy {
         this.setXY = true;
         this.init();
     }
-    public Enemy(int type, int rank, int health, double angle, double x, double y){
+
+    public Enemy(int type, int rank, int health, double angle, double x, double y) {
         this.type = type;
         this.rank = rank;
         this.angle = angle;
         this.health = health;
-        if(rank == 1 && health == 1){
+        if (rank == 1 && health == 1) {
             int health = true;
         }
         this.setHealth = false;
@@ -48,5 +49,21 @@ public class Enemy {
         this.y = y;
         this.setXY = false;
         this.init();
+    }
+
+    public void init() {
+        this.dead = false;
+        this.flashTimer = 80;
+        if (this.type == 1) {
+            if (this.rank == 1) {
+                this.r = 9;
+                if (this.setHealth) {
+                    this.health = 1;
+                }
+                this.speed = 3;
+                this.enemyColor = Color.MAGENTA;
+                this.enemyBoundaryColor = Color.BLACK;
+            }
+        }
     }
 }
