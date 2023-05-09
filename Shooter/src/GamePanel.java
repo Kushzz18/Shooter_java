@@ -100,5 +100,22 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
                 this.waveStartTimerDiff = 0L;
             }
         }
+        if (this.waveStart && enemies.size() == 0) {
+            this.createNewEnemies();
+        }
+        player.update();
+
+        int i;
+        boolean remove;
+        for(i = 0; i < bullets.size(); ++i) {
+            remove = ((Bullet)bullets.get(i)).update();
+            if (remove) {
+                bullets.remove(i);
+                --i;
+            }
+        }
+        for (i=0; i< enemies.size() ; i++){
+            (Enemy)enemies.get(i)).update();
+        }
     }
 }
