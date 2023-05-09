@@ -284,10 +284,159 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
             }
         }
         if(this.laser !=null){
-            
+            boolean remove = laser.update();
+            if(player.isRecovering()) remove = player.isRecovering();
+            if(remove) {
+                laserTaken = false;
+                laser = null;
         }
     }
+        if(slowStartTimer!=0){
+            slowElapsed = (System.nanoTime() - slowStartTimer)/1000000;
+            if(slowElapsed > slowLength){
+                slowStartTimer = 0;
+                for(int i = 0; i < enemies.size(); i++)
+                    enemies.get(i).setSlow(false);
+            }
+        }
 
+
+    }
+    public void gameRender(){
+
+        //Draw Background
+        if(!player.isOver()){
+
+            g.setColor(bgColor);
+            g.fillRect(0, 0 , WIDTH, HEIGHT);
+
+        }
+        else{
+            g.setColor(new Color(200,120,100));
+            g.fillRect(0, 0 , WIDTH, HEIGHT);
+        }
+
+        if(slowStartTimer!=0){
+            g.setColor(new Color(255, 255, 255, 64));
+            g.fillRect(0, 0, WIDTH, HEIGHT);
+        }
+
+
+        //Score
+        g.setFont(new Font("Century Gothic", Font.BOLD, 12));
+        g.setColor(Color.WHITE);
+        g.drawString("SCORE: "+player.getScore(), WIDTH - 80, 20);
+
+        //Credits
+        g.setFont(new Font("Century Gothic", Font.BOLD, 15));
+        g.drawString("", WIDTH-170, HEIGHT-10);
+
+        //Wave Number
+        if(waveStartTimer != 0){
+
+            g.setFont(new Font("Century Gothic", Font.PLAIN, 30));
+            String s = String.format("- W A V E  %d -", waveNumber);
+            int length = (int) g.getFontMetrics().getStringBounds(s, g).getWidth();
+            int alpha = (int) (255 * Math.sin(3.14 * waveStartTimerDiff/waveDelay));
+            if(alpha > 255) alpha = 255;
+            g.setColor(new Color(255, 255, 255, alpha));
+            g.drawString(s, WIDTH/2 - length/2, HEIGHT/2);
+
+        }
+
+
+        //Lives
+        for(int i = 0; i < player.getLives(); i++){
+
+            g.setColor(bgColor.brighter().brighter());
+            g.fillOval(15+(25*i), 15, player.getr()*2, player.getr()*2);
+            g.setStroke(new java.awt.BasicStroke(2));
+            g.setColor(Color.BLACK);
+            g.drawOval(15+(25*i),15,player.getr()*2,player.getr()*2);
+            g.setStroke(new java.awt.BasicStroke(1));
+
+        }
+
+        //Power
+        g.setColor(Color.YELLOW);
+        g.fillRect(20, 60, player.getPower()*8, 8);
+        g.setStroke(new BasicStroke(2));
+        g.setColor(Color.YELLOW.darker());
+        for(int i = 0; i < player.getRequiredPower(); i++){
+            g.drawRect(20 + 8*i, 60, 8, 8);
+        }
+        g.setStroke(new BasicStroke(1));
+
+        //Draw Laser
+        if(laserTaken)
+            laser.draw(g);
+
+        //Draw Player
+        player.draw(g);
+
+        //draw enemies
+        for(int i = 0; i < enemies.size(); i++)
+            enemies.get(i).draw(g);
+
+        //Bullet
+        if(!laserTaken)
+            for(int i = 0; i < bullets.size(); i++){
+                bullets.get(i).draw(g);
+            }
+
+        //explosion
+        for(int i = 0;i < explosions.size(); i++)
+            explosions.get(i).draw(g);
+
+        //PowerUp
+        for(int i = 0; i < powerups.size(); i++) powerups.get(i).draw(g);
+
+        // draw slow down meter
+        if(slowStartTimer != 0 && !laserTaken) {
+            g.setColor(Color.WHITE);
+            g.drawRect(10, 80, 100, 10);
+            g.fillRect(10, 80,
+                    (int) (100 - 100.0 * slowElapsed / slowLength), 10);
+        }
+        else if(slowStartTimer != 0) {
+            g.setColor(Color.WHITE);
+            g.drawRect(10, 100, 100, 10);
+            g.fillRect(10, 100,
+                    (int) (100 - 100.0 * slowElapsed / slowLength), 10);
+        }
+
+        //Laser timer
+        if(laserTaken){
+            g.setColor(Color.WHITE);
+            g.setStroke(new BasicStroke(1));
+            g.drawRect(10, 80,
+                    100, 8);
+            g.fillRect(10, 80,
+                    (int) (100 - 100.0 * Laser.elapsed / Laser.laserTimer), 8);
+            g.setStroke(new BasicStroke(1));
+        }
+
+        //over
+        if(player.isOver()){
+
+            //Over Display
+            g.setFont(new Font("Century Gothic", Font.PLAIN, 30));
+            String s="G A M E    O V E R";
+            int length=(int)g.getFontMetrics().getStringBounds(s,g).getWidth();
+            g.setColor(Color.WHITE);
+            g.drawString(s, WIDTH/2-length/2,HEIGHT/2);
+            //setters off
+            player.setLeft(false);
+            player.setRight(false);
+            player.setUp(false);
+            player.setDown(false);
+            player.setFiring(false);
+            //Listener off
+            removeKeyListener(this);
+
+        }
+
+    }
 
     public void gameDraw(){
 
@@ -336,4 +485,6 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
         if(keyCode == KeyEvent.VK_SPACE) player.setFiring(false);
 
     }
+
+    public void keyTyped(KeyEvent e){}
 }
