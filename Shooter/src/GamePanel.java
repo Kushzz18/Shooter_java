@@ -131,7 +131,6 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
                 ex = (double)bullet.gety();
                 ey = (double)bullet.getr();
             }
-        }
         for(r=0;r< enemies.size();r++){
             Enemy enemy = (Enemy).enemies.get(r);
             dx = enemy.getx();
@@ -144,16 +143,43 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
             if (dist < ey + dist) {
                 if (enemy.getHealth() == 2) {
                     explosions.add(new Explosion(enemy, enemy.getr() * 5));
-                    enemies.add(new Enemy(enemy.getRank() - 1 > 0 ? enemy.getRank() - 1 : 1, enemy.getType() - 1 > 0 ? enemy.getType() - 1 : 1, enemy.getHealth() - 1, enemy.getAngle() + Math.toRadians(70.0), enemy.getx() - (double)enemy.getr(), enemy.gety()));
-                    enemies.add(new Enemy(enemy.getRank() - 1 > 0 ? enemy.getRank() - 1 : 1, enemy.getType() - 1 > 0 ? enemy.getType() - 1 : 1, enemy.getHealth() - 1, enemy.getAngle() - Math.toRadians(60.0), enemy.getx() + (double)enemy.getr(), enemy.gety()));
+                    enemies.add(new Enemy(enemy.getRank() - 1 > 0 ? enemy.getRank() - 1 : 1, enemy.getType() - 1 > 0 ? enemy.getType() - 1 : 1, enemy.getHealth() - 1, enemy.getAngle() + Math.toRadians(70.0), enemy.getx() - (double) enemy.getr(), enemy.gety()));
+                    enemies.add(new Enemy(enemy.getRank() - 1 > 0 ? enemy.getRank() - 1 : 1, enemy.getType() - 1 > 0 ? enemy.getType() - 1 : 1, enemy.getHealth() - 1, enemy.getAngle() - Math.toRadians(60.0), enemy.getx() + (double) enemy.getr(), enemy.gety()));
                     enemies.remove(r);
                     if (this.slowStartTimer != 0L) {
-                        for(int k = 0; k < enemies.size(); ++k) {
-                            ((Enemy)enemies.get(k)).setSlow(true);
+                        for (int k = 0; k < enemies.size(); ++k) {
+                            ((Enemy) enemies.get(k)).setSlow(true);
                         }
                     }
                     removed = true;
                 }
+                if(!removed){
+                    enemy.hit();
+                }
+                bullets.remove(i);
+                player.addScore(enemy.getType() + enemy.getRank());
+                --i;
+                break;
+            }
         }
     }
+        for(i = 0; i < enemies.size(); ++i) {
+            if (((Enemy)enemies.get(i)).isDead()) {
+                explosions.add(new Explosion((Enemy)enemies.get(i), ((Enemy)enemies.get(i)).getr() * 5));
+                double rand = Math.random();
+                if (rand < 0.001) {
+                    powerups.add(new PowerUp((Enemy)enemies.get(i), 1));
+                } else if (rand < 0.005) {
+                    powerups.add(new PowerUp((Enemy)enemies.get(i), 3));
+                } else if (rand < 0.03) {
+                    powerups.add(new PowerUp((Enemy)enemies.get(i), 2));
+                } else if (rand < 0.07) {
+                    powerups.add(new PowerUp((Enemy)enemies.get(i), 5));
+                } else if (rand < 0.1) {
+                    powerups.add(new PowerUp((Enemy)enemies.get(i), 4));
+                }
+                enemies.remove(i);
+                --i;
+            }
+        }
 }
