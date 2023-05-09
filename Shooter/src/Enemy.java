@@ -178,4 +178,52 @@ public class Enemy {
 
         this.dead = this.health <= 0;
     }
+    public void update() {
+        if (this.slow) {
+            this.x += this.dx * 0.3;
+            this.y += this.dy * 0.3;
+            this.flashTimer = 500;
+        } else {
+            this.x += this.dx;
+            this.y += this.dy;
+            this.flashTimer = 80;
+        }
+
+        if (this.type == 1 && this.rank == 1) {
+            this.health = 1;
+        }
+
+        if (this.x < (double)this.r && this.dx < 0.0) {
+            this.dx = -this.dx;
+        }
+
+        if (this.y < (double)this.r && this.dy < 0.0) {
+            this.dy = -this.dy;
+        }
+
+        if (this.x > (double)(GamePanel.WIDTH - this.r) && this.dx > 0.0) {
+            this.dx = -this.dx;
+        }
+
+        if (this.y > (double)(GamePanel.HEIGHT - this.r) && this.dy > 0.0) {
+            this.dy = -this.dy;
+        }
+
+        if (this.health > 1) {
+            long elapsed = (System.nanoTime() - this.startFlashTimer) / 1000000L;
+            if (elapsed > (long)this.flashTimer) {
+                this.setFlash = false;
+                this.startFlashTimer = 0L;
+            }
+        }
+    }
+    public void draw(Graphics2D g){
+        int R = this.enemyColor.getRed();
+        int G = this.enemyColor.getGreen();
+        int B = this.enemyColor.getBlue();
+        this.enemyColor = new Color(R, G, B, 150);
+        int R1 = this.enemyBoundaryColor.getRed();
+        int G1 = this.enemyBoundaryColor.getGreen();
+        int B1 = this.enemyBoundaryColor.getBlue();
+    }
 }
