@@ -23,10 +23,14 @@ public class Bullet {
         bulletColor = Color.RED;
         bulletBoundaryColor = bulletColor.darker().darker();
     }
-    public int getx(){return x;}
-    public int gety(){return y;}
-    public int getr(){return r;}
-    public double getAngle(){return angle;}
+    public int getx()
+    {return x;}
+    public int gety()
+    {return y;}
+    public int getr()
+    {return r;}
+    public double getAngle()
+    {return angle;}
     public boolean update(){
         x+= dx;
         y+= dy;

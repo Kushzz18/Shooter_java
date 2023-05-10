@@ -41,9 +41,8 @@ public class Enemy {
         this.rank = rank;
         this.angle = angle;
         this.health = health;
-        if (rank == 1 && health == 1) {
-           int health = true;
-        }
+//        if (rank == 1 && type == 1)
+//        {this.health = true;}
         this.setHealth = false;
         this.x = x;
         this.y = y;
